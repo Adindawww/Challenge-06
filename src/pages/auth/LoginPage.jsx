@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import image from '../../asset/img/login_image.png'
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import { LoginUser } from "../../redux/actions/authLogin";
 import { useDispatch, useSelector } from "react-redux";
+import { CookieKeys, CookieStorage } from "../../utils/cookies";
+import axios from "axios";
+import { setToken } from "../../redux/reducers/auth/authLoginSlice";
 
 export const LoginPage = () => {
     const [open, setOpen] = useState(false);
@@ -47,6 +50,44 @@ export const LoginPage = () => {
             }));
     };
 
+    const registerLoginWithGoogleAction = async (accessToken) => {
+        try {
+            let data = JSON.stringify({
+                access_token: accessToken,
+            });
+
+            let config = {
+                method: "post",
+                maxBodyLength: Infinity,
+                url: `${process.env.REACT_APP_SERVER}/api/v1/auth/google`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: data,
+            };
+
+            const response = await axios.request(config);
+            const { token } = response.data.data;
+
+            CookieStorage.set(CookieKeys.AuthToken, token);
+            dispatch(setToken(token))
+
+            navigate("/dashboard");
+
+            // window.location.href = "/dashboard";
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                alert(error.response.data.message);
+                return;
+            }
+        }
+    };
+
+    const loginWithGoogle = useGoogleLogin({
+        onSuccess: (responseGoogle) =>
+            registerLoginWithGoogleAction(responseGoogle.access_token),
+    });
+
     return (
         <div className='hero flex items-center justify-center min-h-screen '>
             <div className='flex items-center justify-center min-h-screen inset-0 bg-black bg-opacity-25 backdrop-blur-[2px] w-full h-full'>
@@ -75,16 +116,7 @@ export const LoginPage = () => {
                             <h3 className='justify-center flex mt-2'>or</h3>
                         </div>
                         <div className='justify-center flex mt-3'>
-                            <GoogleLogin
-                                width="250px"
-                                shape='rectangular'
-                                onSuccess={credentialResponse => {
-                                    console.log(credentialResponse);
-                                }}
-                                onError={() => {
-                                    console.log('Login Failed');
-                                }}
-                            />
+                            <button onClick={loginWithGoogle} className="w-[250px] bg-gradient-to-r from-red-600 from-50% to-[#8B0000] via-50% text-white p-2 rounded-md mt-2 hover:bg-white active:scale-[.98] active:duration-75 hover:scale-[1.01] transition-all ease-in-out">Login With Google</button>
                         </div>
                         <div className='pt-3 justify-center flex'>
                             <span className='text-sm font-bold'>Don't have an account? <a className='text-red-500' href='/'>Sign Up</a></span>

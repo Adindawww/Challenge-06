@@ -1,22 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 //cara import file external
-import {http3} from "../../utils/http3";
+import { http3 } from "../../utils/http3";
 import { API_ENDPOINTS } from "../../utils/api-endpoints";
 
 export const reduxMovieDetail = async (id) => {
     return await http3.get(`${API_ENDPOINTS.DETAIL_MOVIE}${id}`)
 }
 
-// const fetchDataMovieDetail = async (id) => {
-//     console.log(id, "ini id movie")
-//     const { data } = await http3.get(`${API_ENDPOINTS.DETAIL_MOVIE}${id}`)
-//     return data
-    
-// }
+const fetchDataMovieDetail = async (id) => {
+    console.log(id, "ini id movie")
+    const { data } = await http3.get(`${API_ENDPOINTS.DETAIL_MOVIE}${id}`)
+    return data
+}
 
 
-// const useMovieDataDetailQuery = (id) =>{
-//     return useQuery(["userDataMovieDetail", id], ()=> fetchDataMovieDetail(id));
-// }
+const useMovieDataDetailQuery = (id) => {
+    return useQuery(["userDataMovieDetail", id], () => fetchDataMovieDetail(id));
+}
 
-// export {fetchDataMovieDetail, useMovieDataDetailQuery}
+export { fetchDataMovieDetail, useMovieDataDetailQuery }

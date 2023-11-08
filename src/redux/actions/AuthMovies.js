@@ -8,15 +8,16 @@ import { reduxMovieDetail } from "../../services/movie/get-data-movie-detail";
 import { Navigate } from "react-router-dom";
 import { reduxMovieSearch } from "../../services/movie/search-data-movie";
 import { setSearchAdinda } from "../reducers/search/authSearchSlice";
+import { setDetail } from "../reducers/movie/authDetailSlice";
 
 
-export const reduxMovieSetail = async (id) => {
-    return await http3.get(`${API_ENDPOINTS.DETAIL_MOVIE}${id}`)
-}
+// export const reduxMovieSDetail = async (id) => {
+//     return await http3.get(`${API_ENDPOINTS.DETAIL_MOVIE}${id}`)
+// }
 
 // default setupnya redux bawan dari redux kalo kita mau pakek dispath
 // ya kayak gini mangilanya 
-export const MovieAdinda = (page) => (dispatch) => {
+export const MovieAdinda = (page) => async (dispatch) => {
     return reduxMovie(page).then((result) => {
         //return console.log(result)
         return dispatch(setMovie(result.data.data));
@@ -27,9 +28,10 @@ export const MovieAdinda = (page) => (dispatch) => {
 }
 
 export const DetailAdinda = (id) => (dispatch) => {
+    console.log(id, "ini ID nya")
     return reduxMovieDetail(id).then((result) => {
-        //return console.log(result)
-        return dispatch(setMovie(result.data.data));
+        console.log(result)
+        return dispatch(setDetail(result.data.data));
     }).catch((err) => {
 
     });
@@ -42,12 +44,12 @@ export const SearchAdinda = (query) => (dispatch) => {
 }
 
 export const searchMovie = (page, query) => async (dispatch) => {
-     return reduxMovieSearch(page, query).then((result) => {
-        console.log(result, "ini coba dilihat")
+    return reduxMovieSearch(page, query).then((result) => {
+        console.log(result, "Tonton Dulu")
         return dispatch(setSearchAdinda(result));
     }).catch((err) => {
-        
-    });
+
+    });
 
 };
 

@@ -24,14 +24,15 @@ export const DetailPage = () => {
     setSearchDataMovie();
   };
 
+
   // const{data:fetchUser} = useMovieDataDetailQuery(id)
-  const { data: Paijo, isError, status } = useGetDataUser({});
+  // const { data: Paijo, isError, status } = useGetDataUser({});
 
   const getDataMovieById = async () => {
     const data = await dispatch(DetailAdinda(id))
   }
 
-  const movies = useSelector((store) => store.movie.movie)
+  const movies = useSelector((store) => store.detail.detail)
 
 
   const dispatch = useDispatch()
@@ -46,7 +47,7 @@ export const DetailPage = () => {
     getDataMovieById()
     //console.log(movies, "ini datanya")
     // console.log(fetchUser, "masa gak ada")
-  }, [Paijo])
+  }, [])
 
 
   return (

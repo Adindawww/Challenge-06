@@ -8,7 +8,7 @@ import { CorouselItem } from '../../asset/components/corousel/CorouselItem';
 import { ListData } from '../../asset/components/RanderList/ListData';
 import { useDispatch, useSelector } from 'react-redux';
 import { MovieAdinda, SearchAdinda } from '../../redux/actions/AuthMovies';
-import { LogOut } from "../../redux/actions/authLogin";
+import { LogOut, getMeData } from "../../redux/actions/authLogin";
 // import { searchMovie } from '../../services/movie/search-data-movie';
 
 export const DashboardPage = () => {
@@ -23,7 +23,7 @@ export const DashboardPage = () => {
   // const { data: movieData } = useMovieDataPopularQuery({
   //   page : PageNow
   // });
-  const { data: Paijo, isError, status } = useGetDataUser({});
+  //const { data: Paijo, isError, status } = useGetDataUser({});
   //const { data: popularMovie } = useMovieDataPopularQuery(PageNow);
   const dispatch = useDispatch()
   // const handleLogout = () => {
@@ -34,6 +34,10 @@ export const DashboardPage = () => {
   const getDataMovie = async () => {
     const data = await dispatch(MovieAdinda(PageNow))
     //setMovies(data.payload.data.data) 
+  }
+
+  const getMe = async () => {
+    const datadiri = await dispatch(getMeData())
   }
   //mengirim parameter yang diambil dari inputan search bar nya
   const goToSearch = (e) => {
@@ -47,6 +51,9 @@ export const DashboardPage = () => {
   const movies = useSelector((store) => store.movie.movie)
   console.log(movies)
 
+  const user = useSelector((store) => store.me.getMe)
+  console.log(user)
+
   // const search  = async (q) => {
   //     if (q.length > 0) {
   //         const query = await searchMovie(q, PageNow)
@@ -57,8 +64,9 @@ export const DashboardPage = () => {
 
   useEffect(() => {
     getDataMovie()
+    getMe()
     //console.log(popularMovie, "ini datanya")
-  }, [Paijo, PageNow])
+  }, [PageNow])
 
 
   return (

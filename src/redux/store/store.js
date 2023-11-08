@@ -9,4 +9,5 @@ import thunk from "redux-thunk";
     reducer: rootReducers,
     //sudah menggunakan redux thunk untuk menjadi middleware
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
+    devTools : process.env.NODE_ENV !== "production",
 });

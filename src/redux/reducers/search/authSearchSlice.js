@@ -1,4 +1,4 @@
- import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     searchData: []
@@ -15,5 +15,5 @@ const authSearchSlice = createSlice({
 });
 
 
-export const {  setSearchAdinda } = authSearchSlice.actions;
+export const { setSearchAdinda } = authSearchSlice.actions;
 export default authSearchSlice.reducer;
